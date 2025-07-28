@@ -32,9 +32,7 @@ function checkRaids() {
   output += "</ul>";
   resultsDiv.innerHTML = output;
 }
-// ===========================
-// 🧠 Helper Functions
-// ===========================
+//Helper Functions
 
 function xpToLevel(xp) {
   let points = 0;
@@ -62,9 +60,9 @@ function calculateCombatLevel(att, str, def, hp, range, mage, pray) {
   return base + Math.max(melee, rangeCombat, mageCombat);
 }
 
-// ===========================
-// 🎯 Fetch Stats from HiScores
-// ===========================
+
+//Fetch Stats from HiScores
+
 
 async function fetchStats() {
   const username = document.getElementById("osrsUsername").value;
@@ -78,6 +76,7 @@ async function fetchStats() {
     const lines = text.split("\n");
 
     // Extract XP values for key skills
+
     const prayerXP = parseInt(lines[6].split(",")[2]);     // Prayer
     const hitpointsXP = parseInt(lines[4].split(",")[2]);  // HP
     const attackXP = parseInt(lines[1].split(",")[2]);
@@ -98,10 +97,9 @@ async function fetchStats() {
     const prayerLevel = xpToLevel(prayerXP);
 
     // Autofill the form
+
     document.getElementById("combatLevel").value = Math.floor(combat);
     document.getElementById("prayerLevel").value = prayerLevel;
-
-    alert(`✅ Fetched! Combat: ${Math.floor(combat)}, Prayer: ${prayerLevel}`);
   } catch (err) {
     alert("⚠️ Error: " + err.message);
   }
