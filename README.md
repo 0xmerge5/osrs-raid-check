@@ -9,7 +9,6 @@ A beginner-friendly web app that tells Old School RuneScape players which raids 
 - Input your Combat Level and Prayer Level
 - Select exact gear for Head, Body, Legs, Weapon, Shield
 - Instantly check which raids you're eligible for
-- Built with pure HTML, CSS, and JavaScript (no frameworks)
 
 ---
 
