@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OSRS Raid Checker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>OSRS Raid Checker</h1>
+
+  <div>
+    <label>Combat Level:</label>
+    <input type="number" id="combatLevel" />
+    <label>Prayer Level:</label>
+    <input type="number" id="prayerLevel" />
+    <h3>Gear Setup</h3>
+<div class="gear-grid">
+  <div>
+    <label>Helmet:</label>
+    <select id="slot-head">
+      <option value="">None</option>
+      <option value="Serpentine helm">Serpentine helm</option>
+      <option value="Void ranger helm">Void ranger helm</option>
+      <option value="Armadyl helmet">Armadyl helmet</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Body:</label>
+    <select id="slot-body">
+      <option value="">None</option>
+      <option value="Karil's top">Karil's top</option>
+      <option value="Void top">Void top</option>
+      <option value="Armadyl chestplate">Armadyl chestplate</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Legs:</label>
+    <select id="slot-legs">
+      <option value="">None</option>
+      <option value="Karil's skirt">Karil's skirt</option>
+      <option value="Void robe">Void robe</option>
+      <option value="Armadyl chainskirt">Armadyl chainskirt</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Weapon:</label>
+    <select id="slot-weapon">
+      <option value="">None</option>
+      <option value="Blowpipe">Blowpipe</option>
+      <option value="Twisted bow">Twisted bow</option>
+      <option value="Rune crossbow">Rune crossbow</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Shield:</label>
+    <select id="slot-shield">
+      <option value="">None</option>
+      <option value="Dragonfire shield">Dragonfire shield</option>
+      <option value="Crystal shield">Crystal shield</option>
+    </select>
+  </div>
+</div>
+
+    <button onclick="checkRaids()">Check Raids</button>
+  </div>
+
+  <div id="results"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
