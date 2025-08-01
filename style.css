@@ -120,15 +120,40 @@ button#check-raids-btn:hover {
   background-color: var(--button-hover);
 }
 
-/* 6. Gear grid placeholder */
+/* 6. Gear grid layout */
+/*
+  The gear grid presents a responsive grid of equipment slots. Each slot
+  stacks its label and select element vertically. On narrow screens it
+  will display one or two columns; on larger screens it flows into as
+  many columns as will fit. Gear selects inherit the card and text
+  colors to blend with the overall theme.
+*/
+
 #gear-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
   margin-bottom: 1.5rem;
-  text-align: center;
 }
 
-#gear-grid .placeholder {
-  color: #777;
-  font-style: italic;
+/* Individual gear slot wrapper */
+.gear-slot {
+  display: flex;
+  flex-direction: column;
+}
+
+.gear-slot label {
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+}
+
+.gear-slot select {
+  padding: 0.4rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
+  font-size: 0.9rem;
 }
 
 /* 7. Results area */

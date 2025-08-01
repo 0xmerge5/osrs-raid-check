@@ -115,10 +115,142 @@
         </div>
       </form>
 
-      <!-- Placeholder gear grid for 12 equipment slots -->
+      <!-- Gear selector grid: 12 slots corresponding to in-game equipment slots.
+           Players can tag each slot with a gear type such as Melee, Ranged,
+           Magic, Tank or Prayer. These tags will later be used in eligibility checks. -->
       <section id="gear-grid" class="gear-grid">
-        <!-- We'll populate this grid in a later step -->
-        <p class="placeholder">Gear slot selector coming soon…</p>
+        <div class="gear-slot">
+          <label for="slot-head">Head</label>
+          <select id="slot-head">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-neck">Neck</label>
+          <select id="slot-neck">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-body">Body</label>
+          <select id="slot-body">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-legs">Legs</label>
+          <select id="slot-legs">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-weapon">Weapon</label>
+          <select id="slot-weapon">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-shield">Shield</label>
+          <select id="slot-shield">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-hands">Gloves</label>
+          <select id="slot-hands">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-boots">Boots</label>
+          <select id="slot-boots">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-ring">Ring</label>
+          <select id="slot-ring">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-cape">Cape</label>
+          <select id="slot-cape">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-ammo">Ammo</label>
+          <select id="slot-ammo">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
+        <div class="gear-slot">
+          <label for="slot-other">Other</label>
+          <select id="slot-other">
+            <option value="">None</option>
+            <option value="melee">Melee</option>
+            <option value="ranged">Ranged</option>
+            <option value="magic">Magic</option>
+            <option value="tank">Tank</option>
+            <option value="prayer">Prayer</option>
+          </select>
+        </div>
       </section>
 
       <!-- Button to trigger eligibility check; we'll implement this later -->

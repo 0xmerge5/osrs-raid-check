@@ -182,7 +182,10 @@ const raids = [
         hitpoints: 70
       },
       quests: ['Priest in Peril'],
-      gear: [] // gear tags can be added later
+      // Chambers of Xeric rewards versatility but requires at least
+      // some melee and ranged capability. Players must equip at
+      // least one melee and one ranged item somewhere in their gear.
+      gear: ['melee', 'ranged']
     }
   },
   {
@@ -197,7 +200,10 @@ const raids = [
         strength: 85
       },
       quests: ['Desert Treasure'],
-      gear: []
+      // Theatre of Blood is extremely punishing; you'll need heavy
+      // armour and strong melee weapons. Require at least a melee and
+      // tank item to enter.
+      gear: ['melee', 'tank']
     }
   },
   {
@@ -212,7 +218,10 @@ const raids = [
         hitpoints: 80
       },
       quests: ['Recipe for Disaster'],
-      gear: []
+      // Tombs of Amascut demands both magic prowess and adequate
+      // prayer bonuses for survival. Players must have at least one
+      // magic and one prayer item equipped.
+      gear: ['magic', 'prayer']
     }
   }
 ];
@@ -252,8 +261,16 @@ function getPlayerData() {
     .filter((box) => box.checked)
     .map((box) => box.value);
 
-  // Gear tags placeholder (empty until gear grid is implemented)
+  // Collect gear tags from the gear grid. Each select can be set to
+  // none or to a specific tag (melee, ranged, magic, tank, prayer).
+  const gearSelects = document.querySelectorAll('#gear-grid select');
   const gear = [];
+  gearSelects.forEach((select) => {
+    const value = select.value.trim();
+    if (value) {
+      gear.push(value);
+    }
+  });
 
   return {
     ...levels,
