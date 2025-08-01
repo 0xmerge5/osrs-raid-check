@@ -38,6 +38,8 @@ body.dark-mode {
 body {
   font-family: var(--font-family);
   background-color: var(--bg-color);
+  /* Parchment-style gradient for a more immersive OSRS feel */
+  background-image: radial-gradient(circle at top left, #f8f2e0, #e6dcc2);
   color: var(--text-color);
   line-height: 1.6;
   padding: 1rem;
@@ -49,7 +51,10 @@ header.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
+  /* Add more breathing room below the header and draw a line beneath it */
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.75rem;
 }
 
 header.header h1 {
@@ -81,6 +86,12 @@ header.header h1 {
   flex-direction: column;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  /* Give the form a card-like appearance */
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--card-bg-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .form-group {
@@ -110,14 +121,17 @@ button#check-raids-btn {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background-color: var(--accent-color);
+  /* Use a gradient and subtle shadow for a more tactile button feel */
+  background-image: linear-gradient(to bottom, var(--accent-color), var(--button-hover));
   color: #fff;
-  transition: background-color 0.2s;
+  box-shadow: 0 2px 2px var(--shadow-color);
+  transition: background-position 0.2s, box-shadow 0.2s;
 }
 
 button#fetch-btn:hover,
 button#check-raids-btn:hover {
-  background-color: var(--button-hover);
+  background-image: linear-gradient(to bottom, var(--button-hover), var(--accent-color));
+  box-shadow: 0 3px 4px var(--shadow-color);
 }
 
 /* 6. Gear grid layout */
@@ -134,6 +148,12 @@ button#check-raids-btn:hover {
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
+  /* Card styling to match the form */
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--card-bg-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 /* Individual gear slot wrapper */
@@ -159,6 +179,12 @@ button#check-raids-btn:hover {
 /* 7. Results area */
 .results {
   margin-top: 1rem;
+  /* Card styling for the results list */
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--card-bg-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 /* 8. Raid cards styling */
