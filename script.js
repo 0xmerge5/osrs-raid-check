@@ -385,4 +385,26 @@ document.addEventListener('DOMContentLoaded', () => {
       displayResults();
     });
   }
+
+  // Dark mode: restore user preference and set up toggle
+  const toggleBtn = document.getElementById('dark-mode-toggle');
+  if (toggleBtn) {
+    // Apply saved preference on page load
+    const savedMode = localStorage.getItem('osrs-dark-mode');
+    if (savedMode === 'true') {
+      document.body.classList.add('dark-mode');
+    }
+    // Set the initial icon based on the current mode
+    toggleBtn.textContent = document.body.classList.contains('dark-mode')
+      ? '☀️'
+      : '🌙';
+    // Toggle dark mode on click
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('osrs-dark-mode', isDark.toString());
+      // Swap the icon
+      toggleBtn.textContent = isDark ? '☀️' : '🌙';
+    });
+  }
 });

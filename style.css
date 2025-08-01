@@ -1,11 +1,34 @@
 /*
-  Basic styling for the OSRS Raid Checker.  
-  We start with a mobile‑first approach: everything stacks vertically
-  and uses comfortable spacing. Colours and fonts are chosen to evoke
-  Old School RuneScape’s medieval feel without requiring external assets.
+  Styling for the OSRS Raid Checker with a RuneScape-inspired palette.  
+  We use CSS variables to define colors and fonts for the light and dark
+  themes, making it easy to switch between them. A mobile‑first layout
+  ensures the site looks good on all screen sizes.
 */
 
-/* Global resets */
+/* 1. Theme variables for light mode */
+:root {
+  --bg-color: #f5f1e6;
+  --card-bg-color: #ffffff;
+  --text-color: #2a2a2a;
+  --accent-color: #4c6e31;
+  --button-hover: #3f5928;
+  --border-color: #dcd2ba;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --font-family: 'Merriweather', serif;
+}
+
+/* 2. Override variables for dark mode when the body has .dark-mode */
+body.dark-mode {
+  --bg-color: #1e1c17;
+  --card-bg-color: #2b2922;
+  --text-color: #e8e0c9;
+  --accent-color: #8a9e5e;
+  --button-hover: #6d7e45;
+  --border-color: #3f3a31;
+  --shadow-color: rgba(0, 0, 0, 0.6);
+}
+
+/* 3. Global resets */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -13,23 +36,41 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f1e6;
-  color: #2a2a2a;
-  line-height: 1.4;
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
   padding: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* 4. Header styling */
 header.header {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 1.5rem;
 }
 
 header.header h1 {
   font-size: 1.75rem;
-  color: #333;
+  color: var(--accent-color);
 }
 
+/* Dark mode toggle button */
+#dark-mode-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--accent-color);
+  transition: transform 0.2s;
+}
+#dark-mode-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* 5. Layout containers */
 .container {
   max-width: 640px;
   margin: 0 auto;
@@ -54,9 +95,11 @@ header.header h1 {
 
 .form-group input {
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   font-size: 1rem;
+  background-color: var(--card-bg-color);
+  color: var(--text-color);
 }
 
 button#fetch-btn,
@@ -67,16 +110,17 @@ button#check-raids-btn {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background-color: #4c6e31;
+  background-color: var(--accent-color);
   color: #fff;
   transition: background-color 0.2s;
 }
 
 button#fetch-btn:hover,
 button#check-raids-btn:hover {
-  background-color: #3f5928;
+  background-color: var(--button-hover);
 }
 
+/* 6. Gear grid placeholder */
 #gear-grid {
   margin-bottom: 1.5rem;
   text-align: center;
@@ -87,11 +131,12 @@ button#check-raids-btn:hover {
   font-style: italic;
 }
 
+/* 7. Results area */
 .results {
   margin-top: 1rem;
 }
 
-/* Results rendering: raid cards */
+/* 8. Raid cards styling */
 .raid-cards {
   display: flex;
   flex-direction: column;
@@ -102,31 +147,22 @@ button#check-raids-btn:hover {
   .raid-cards {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 1rem;
   }
 }
 
 .raid-card {
   flex: 1 1 calc(33.333% - 1rem);
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 0.75rem;
-  background-color: #fff;
+  background-color: var(--card-bg-color);
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--shadow-color);
+  transition: transform 0.2s, opacity 0.2s;
 }
 
-.raid-card h3 {
-  margin-top: 0.5rem;
-  margin-bottom: 0.25rem;
-  font-size: 1rem;
-  color: #333;
-}
-
-.raid-card a {
-  color: #276749;
-  text-decoration: underline;
-  font-size: 0.875rem;
+.raid-card:hover {
+  transform: translateY(-3px);
 }
 
 .raid-card.locked {
@@ -145,7 +181,20 @@ button#check-raids-btn:hover {
   object-fit: cover;
 }
 
-/* Styling for the quest checklist */
+.raid-card h3 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+.raid-card a {
+  color: var(--accent-color);
+  text-decoration: underline;
+  font-size: 0.875rem;
+}
+
+/* 9. Quest checklist styling */
 .quest-group .quest-checkboxes {
   display: flex;
   flex-direction: column;
