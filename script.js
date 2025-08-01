@@ -32,14 +32,27 @@ async function fetchStats() {
   }
 
   try {
-    // Construct the URL to the hiscores API via a CORS proxy.
-    const url =
-      'https://corsproxy.io/?https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=' +
-      encodeURIComponent(username);
-
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    // Attempt to fetch data via our optional Express backend first. If it fails
+    // (e.g. when running on GitHub Pages where no backend exists), fall back
+    // to using a public CORS proxy. The backend endpoint lives at /api/hiscore?player=NAME.
+    let url = `/api/hiscore?player=${encodeURIComponent(username)}`;
+    let response;
+    try {
+      response = await fetch(url);
+      // If the backend returns an error status, treat as failure and fall back.
+      if (!response.ok) {
+        throw new Error('Backend request failed');
+      }
+    } catch (err) {
+      // Fall back to the public CORS proxy. This makes the app work on static
+      // hosts like GitHub Pages where no Node server is running.
+      url =
+        'https://corsproxy.io/?https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=' +
+        encodeURIComponent(username);
+      response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
     }
     const text = await response.text();
 
