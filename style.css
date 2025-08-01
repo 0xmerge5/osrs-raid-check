@@ -278,3 +278,23 @@ button#check-raids-btn:hover {
   color: #155724;
   border-color: #c3e6cb;
 }
+
+/* Secondary buttons (Save/Clear). These use a slightly muted green
+   gradient and share the same box shadow and hover effect as the primary
+   buttons. */
+.secondary-btn {
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-image: linear-gradient(to bottom, #7c9a5a, #5e7742);
+  color: #fff;
+  box-shadow: 0 2px 2px var(--shadow-color);
+  transition: background-position 0.2s, box-shadow 0.2s;
+}
+.secondary-btn:hover {
+  background-image: linear-gradient(to bottom, #5e7742, #7c9a5a);
+  box-shadow: 0 3px 4px var(--shadow-color);
+}

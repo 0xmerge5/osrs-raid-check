@@ -705,14 +705,16 @@ function getPlayerData() {
     .filter((box) => box.checked)
     .map((box) => box.value);
 
-  // Collect gear tags from the gear grid. Each select can be set to
-  // none or to a specific tag (melee, ranged, magic, tank, prayer).
-  const gearSelects = document.querySelectorAll('#gear-grid select');
-  const gear = [];
-  gearSelects.forEach((select) => {
+  // Collect gear selections keyed by slot. Each select has a data-slot
+  // attribute (e.g. head, neck, body, etc.) and a value containing
+  // the item name. Store non-empty selections in an object for easy
+  // persistence and lookup when loading a saved profile.
+  const gear = {};
+  document.querySelectorAll('.gear-slot select').forEach((select) => {
+    const slot = select.getAttribute('data-slot');
     const value = select.value.trim();
     if (value) {
-      gear.push(value);
+      gear[slot] = value;
     }
   });
 
@@ -751,10 +753,12 @@ function checkEligibility(player) {
         if (!player.quests.includes(quest)) return false;
       }
     }
-    // Check gear requirements (currently empty)
+    // Check gear requirements (currently unused). Convert the player's gear
+    // selections from an object into an array of item names for comparison.
     if (req.gear) {
+      const playerGearItems = Object.values(player.gear || {});
       for (const tag of req.gear) {
-        if (!player.gear.includes(tag)) return false;
+        if (!playerGearItems.includes(tag)) return false;
       }
     }
     return true;
@@ -800,8 +804,10 @@ function getMissingRequirements(raid, player) {
   }
   // Gear (future feature)
   if (req.gear) {
+    // Convert player's gear selections (stored as an object) into an array of item names.
+    const playerGearItems = Object.values(player.gear || {});
     for (const tag of req.gear) {
-      if (!player.gear.includes(tag)) {
+      if (!playerGearItems.includes(tag)) {
         reasons.push(`Missing gear: ${tag}`);
       }
     }
@@ -864,11 +870,78 @@ function displayResults() {
   resultsDiv.appendChild(cardsContainer);
 }
 
+/**
+ * Save the current profile (stats, quests and gear) to localStorage.
+ * The profile is stored under the key 'osrs-profile' as a JSON string.
+ */
+function saveProfile() {
+  const player = getPlayerData();
+  try {
+    localStorage.setItem('osrs-profile', JSON.stringify(player));
+    showMessage('Profile saved.', 'success');
+  } catch (err) {
+    console.error('Could not save profile:', err);
+    showMessage('Failed to save profile.', 'error');
+  }
+}
+
+/**
+ * Load a saved profile from localStorage and populate the form fields.
+ * If no profile exists, nothing happens. This runs on page load.
+ */
+function loadProfile() {
+  const data = localStorage.getItem('osrs-profile');
+  if (!data) return;
+  try {
+    const player = JSON.parse(data);
+    // Populate numeric fields
+    ['combat', 'prayer', 'attack', 'strength', 'defence', 'hitpoints', 'ranged', 'magic'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && typeof player[id] !== 'undefined') {
+        el.value = player[id];
+      }
+    });
+    // Populate quest checkboxes
+    const questBoxes = document.querySelectorAll('.quest-checkboxes input[type="checkbox"]');
+    questBoxes.forEach((box) => {
+      box.checked = Array.isArray(player.quests) && player.quests.includes(box.value);
+    });
+    // Populate gear selects
+    const gear = player.gear || {};
+    document.querySelectorAll('.gear-slot select').forEach((select) => {
+      const slot = select.getAttribute('data-slot');
+      select.value = gear[slot] || '';
+    });
+  } catch (err) {
+    console.error('Could not load profile:', err);
+  }
+}
+
+/**
+ * Clear the saved profile from localStorage and reset all form fields to default.
+ */
+function clearProfile() {
+  localStorage.removeItem('osrs-profile');
+  // Reset form inputs
+  document.getElementById('stats-form').reset();
+  // Manually reset gear selects
+  document.querySelectorAll('.gear-slot select').forEach((select) => {
+    select.value = '';
+  });
+  // Clear quest checkboxes
+  document.querySelectorAll('.quest-checkboxes input[type="checkbox"]').forEach((box) => {
+    box.checked = false;
+  });
+  showMessage('Profile cleared.', 'success');
+}
+
 // Register our event listener once the DOM is loaded. This ensures the button
 // exists when we attach the click handler.
 document.addEventListener('DOMContentLoaded', () => {
   // Populate the gear selectors with item names on page load
   populateGearDropdowns();
+  // Load the player's saved profile if it exists to prefill stats, quests and gear
+  loadProfile();
 
   const fetchButton = document.getElementById('fetch-btn');
   if (fetchButton) {
@@ -903,6 +976,16 @@ document.addEventListener('DOMContentLoaded', () => {
       // Re-render the raid cards based on the current form values.
       displayResults();
     });
+  }
+
+  // Set up Save and Clear profile buttons
+  const saveBtn = document.getElementById('save-profile-btn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', saveProfile);
+  }
+  const clearBtn = document.getElementById('clear-profile-btn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', clearProfile);
   }
 
   // Dark mode: restore user preference and set up toggle
