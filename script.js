@@ -26,7 +26,8 @@ async function fetchStats() {
 
   // Basic validation: ensure a username was entered.
   if (!username) {
-    alert('Please enter a RuneScape username before fetching stats.');
+    // Show a friendly error message instead of using alert()
+    showMessage('Please enter a RuneScape username before fetching stats.', 'error');
     return;
   }
 
@@ -98,11 +99,14 @@ async function fetchStats() {
       magic: stats.magic
     });
     combatInput.value = combatLevel;
+    // Show a success message when stats are fetched
+    showMessage('Stats fetched successfully!', 'success');
   } catch (error) {
     // Handle errors gracefully. This includes network failures and invalid usernames.
     console.error(error);
-    alert(
-      'Failed to fetch hiscores data. Please check the username and try again later.'
+    showMessage(
+      'Failed to fetch hiscores data. Please check the username and try again later.',
+      'error'
     );
   }
 }
@@ -122,6 +126,37 @@ function computeCombatLevel(stats) {
   const range = 0.325 * Math.floor(1.5 * stats.ranged);
   const mage = 0.325 * Math.floor(1.5 * stats.magic);
   return Math.floor(base + Math.max(melee, range, mage));
+}
+
+// -----------------------------------------------------------------------------
+// UI helper: display messages to the user
+// We'll show error or success notifications in a message div at the top of the form.
+// A timeout ensures the message disappears after a few seconds. If another
+// message appears before the previous one fades, we clear the existing timeout.
+
+let messageTimeout = null;
+
+/**
+ * Display a notification message in the UI.
+ *
+ * @param {string} text - The text to display to the user.
+ * @param {string} [type='error'] - The type of message: 'error' or 'success'.
+ */
+function showMessage(text, type = 'error') {
+  const messageDiv = document.getElementById('message');
+  if (!messageDiv) return;
+  messageDiv.textContent = text;
+  messageDiv.className = `message ${type}`;
+  messageDiv.style.display = 'block';
+  // Clear any existing timeout before setting a new one
+  if (messageTimeout) {
+    clearTimeout(messageTimeout);
+  }
+  messageTimeout = setTimeout(() => {
+    messageDiv.style.display = 'none';
+    messageDiv.className = 'message';
+    messageTimeout = null;
+  }, 5000);
 }
 
 /*
@@ -380,8 +415,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const checkButton = document.getElementById('check-raids-btn');
   if (checkButton) {
     checkButton.addEventListener('click', () => {
-      // When the button is clicked, simply re-render the raid cards
-      // based on the current form values.
+      // Gather player data before checking raids
+      const player = getPlayerData();
+      // If the user hasn’t fetched stats and all manual fields are zero,
+      // prompt them to enter values first. This avoids confusion when
+      // everything is locked simply because no data was provided.
+      const manualFieldsEmpty =
+        playerStats === null &&
+        player.attack === 0 &&
+        player.strength === 0 &&
+        player.defence === 0 &&
+        player.hitpoints === 0 &&
+        player.ranged === 0 &&
+        player.prayer === 0 &&
+        player.magic === 0;
+      if (manualFieldsEmpty) {
+        showMessage(
+          'Please enter your stats or fetch them before checking raids.',
+          'error'
+        );
+        return;
+      }
+      // Re-render the raid cards based on the current form values.
       displayResults();
     });
   }
