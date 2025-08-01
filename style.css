@@ -62,6 +62,19 @@ header.header h1 {
   font-family: var(--heading-font);
   font-size: 2rem;
   color: var(--accent-color);
+  /* Align the icon and text horizontally and add spacing */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Styling for the decorative sword icon within the header */
+.sword-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  /* Use the current text color so it matches the heading */
+  display: inline-block;
+  flex-shrink: 0;
 }
 
 /* Tagline styling below the header */
@@ -199,6 +212,12 @@ button#check-raids-btn:hover {
   font-size: 0.9rem;
 }
 
+/* Highlight gear selects on hover to provide better feedback */
+.gear-slot select:hover {
+  border-color: var(--accent-color);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 /* 7. Results area */
 .results {
   margin-top: 1rem;
@@ -234,6 +253,20 @@ button#check-raids-btn:hover {
   text-align: center;
   box-shadow: 0 2px 4px var(--shadow-color);
   transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  /* Use an entry animation to smoothly reveal raid cards */
+  animation: fadeInUp 0.6s ease both;
+}
+
+/* Define keyframes for fading and sliding up elements */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .raid-card:hover {
@@ -357,6 +390,8 @@ button#check-raids-btn:hover {
 .stat-bar-fill {
   height: 100%;
   background-image: linear-gradient(to right, var(--accent-color), var(--button-hover));
+  /* Add a subtle glow around the bar for a fancier look */
+  box-shadow: 0 0 4px rgba(76, 110, 49, 0.5);
   width: 0%;
   border-radius: 0.25rem;
   transition: width 0.4s ease;
