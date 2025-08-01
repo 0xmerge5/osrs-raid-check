@@ -667,6 +667,55 @@ const raids = [
       // requirements and instead rely on the player’s overall stats.
       gear: []
     }
+  },
+  {
+    name: 'Zulrah',
+    image: 'https://via.placeholder.com/80x50?text=Zulrah',
+    guide: 'https://oldschool.runescape.wiki/w/Zulrah',
+    requirements: {
+      combat: 70,
+      prayer: 45,
+      stats: {
+        ranged: 60,
+        hitpoints: 75
+      },
+      quests: ['Regicide'],
+      // Zulrah requires high ranged and hitpoints, along with completion of Regicide.
+      gear: []
+    }
+  },
+  {
+    name: 'Vorkath',
+    image: 'https://via.placeholder.com/80x50?text=Vorkath',
+    guide: 'https://oldschool.runescape.wiki/w/Vorkath',
+    requirements: {
+      combat: 90,
+      prayer: 50,
+      stats: {
+        strength: 80,
+        ranged: 75,
+        hitpoints: 90
+      },
+      quests: ['Dragon Slayer II'],
+      // Vorkath is gated behind Dragon Slayer II and demands high combat stats.
+      gear: []
+    }
+  },
+  {
+    name: 'The Nightmare',
+    image: 'https://via.placeholder.com/80x50?text=Nightmare',
+    guide: 'https://oldschool.runescape.wiki/w/The_Nightmare',
+    requirements: {
+      combat: 80,
+      prayer: 50,
+      stats: {
+        defence: 70,
+        hitpoints: 80
+      },
+      quests: ['Priest in Peril'],
+      // The Nightmare is a high-level boss requiring strong defence and HP, plus Priest in Peril.
+      gear: []
+    }
   }
 ];
 
