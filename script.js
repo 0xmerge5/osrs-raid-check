@@ -114,6 +114,8 @@ async function fetchStats() {
     combatInput.value = combatLevel;
     // Show a success message when stats are fetched
     showMessage('Stats fetched successfully!', 'success');
+    // Update the stats summary to reflect the newly fetched levels
+    updateStatsSummary();
   } catch (error) {
     // Handle errors gracefully. This includes network failures and invalid usernames.
     console.error(error);
@@ -170,6 +172,42 @@ function showMessage(text, type = 'error') {
     messageDiv.className = 'message';
     messageTimeout = null;
   }, 5000);
+}
+
+// -----------------------------------------------------------------------------
+// Skill summary progress bar update logic
+//
+// The stats summary displays horizontal progress bars for each combat-related
+// skill. Each bar shows the player's level relative to the max level (99).
+// This function rebuilds the summary whenever stats change or load. It reads
+// data via getPlayerData() and updates DOM elements accordingly.
+
+function updateStatsSummary() {
+  const container = document.getElementById('stats-summary');
+  if (!container) return;
+  const player = getPlayerData();
+  const stats = ['attack', 'strength', 'defence', 'hitpoints', 'ranged', 'prayer', 'magic'];
+  // Clear previous summary
+  container.innerHTML = '';
+  stats.forEach((stat) => {
+    const level = player[stat] || 0;
+    const percent = Math.min(100, (level / 99) * 100);
+    // Create elements
+    const barContainer = document.createElement('div');
+    barContainer.className = 'stat-bar-container';
+    const label = document.createElement('span');
+    label.className = 'stat-bar-label';
+    label.textContent = `${stat.charAt(0).toUpperCase() + stat.slice(1)}: ${level}`;
+    const bar = document.createElement('div');
+    bar.className = 'stat-bar';
+    const fill = document.createElement('div');
+    fill.className = 'stat-bar-fill';
+    fill.style.width = `${percent}%`;
+    bar.appendChild(fill);
+    barContainer.appendChild(label);
+    barContainer.appendChild(bar);
+    container.appendChild(barContainer);
+  });
 }
 
 // -----------------------------------------------------------------------------
@@ -974,6 +1012,8 @@ function loadProfile() {
       const slot = select.getAttribute('data-slot');
       select.value = gear[slot] || '';
     });
+    // Refresh the stats summary when profile is loaded
+    updateStatsSummary();
   } catch (err) {
     console.error('Could not load profile:', err);
   }
@@ -1004,6 +1044,14 @@ document.addEventListener('DOMContentLoaded', () => {
   populateGearDropdowns();
   // Load the player's saved profile if it exists to prefill stats, quests and gear
   loadProfile();
+
+  // Generate the initial stats summary (either from loaded profile or default values)
+  updateStatsSummary();
+
+  // Whenever the user manually edits any numeric stat field, refresh the summary
+  document.querySelectorAll('#stats-form input[type="number"]').forEach((input) => {
+    input.addEventListener('input', updateStatsSummary);
+  });
 
   const fetchButton = document.getElementById('fetch-btn');
   if (fetchButton) {
