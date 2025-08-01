@@ -121,134 +121,77 @@
       <section id="gear-grid" class="gear-grid">
         <div class="gear-slot">
           <label for="slot-head">Head</label>
-          <select id="slot-head">
+          <!-- Only the default "None" option is defined in the markup.  -->
+          <!-- All other options will be injected at runtime by the JS  -->
+          <!-- populateGearDropdowns() function based on the slot type. -->
+          <select id="slot-head" data-slot="head">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-neck">Neck</label>
-          <select id="slot-neck">
+          <select id="slot-neck" data-slot="neck">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-body">Body</label>
-          <select id="slot-body">
+          <select id="slot-body" data-slot="body">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-legs">Legs</label>
-          <select id="slot-legs">
+          <select id="slot-legs" data-slot="legs">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-weapon">Weapon</label>
-          <select id="slot-weapon">
+          <select id="slot-weapon" data-slot="weapon">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-shield">Shield</label>
-          <select id="slot-shield">
+          <select id="slot-shield" data-slot="shield">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-hands">Gloves</label>
-          <select id="slot-hands">
+          <select id="slot-hands" data-slot="hands">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-boots">Boots</label>
-          <select id="slot-boots">
+          <select id="slot-boots" data-slot="boots">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-ring">Ring</label>
-          <select id="slot-ring">
+          <select id="slot-ring" data-slot="ring">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-cape">Cape</label>
-          <select id="slot-cape">
+          <select id="slot-cape" data-slot="cape">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-ammo">Ammo</label>
-          <select id="slot-ammo">
+          <select id="slot-ammo" data-slot="ammo">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
         <div class="gear-slot">
           <label for="slot-other">Other</label>
-          <select id="slot-other">
+          <select id="slot-other" data-slot="other">
             <option value="">None</option>
-            <option value="melee">Melee</option>
-            <option value="ranged">Ranged</option>
-            <option value="magic">Magic</option>
-            <option value="tank">Tank</option>
-            <option value="prayer">Prayer</option>
           </select>
         </div>
       </section>

@@ -159,6 +159,446 @@ function showMessage(text, type = 'error') {
   }, 5000);
 }
 
+// -----------------------------------------------------------------------------
+// Gear item data and populating logic
+//
+// To provide a more authentic equipment selection experience, each gear slot
+// now lists common RuneScape items appropriate for that slot instead of
+// generic tags like "melee" or "magic". Because loading a complete list of
+// every item in the game would significantly increase the bundle size and
+// require cross‑origin requests, we include curated lists of popular and
+// representative items for each slot. Players can still choose "None" if
+// they do not wish to equip anything in a slot.
+
+// A mapping from slot names (matching the data-slot attribute on each select)
+// to arrays of item names. Feel free to extend these lists with additional
+// favourites. The first entry in each array should be omitted here because
+// the HTML already includes a "None" option by default.
+const gearItems = {
+  head: [
+    'Helm of neitiznot',
+    'Neitiznot faceguard',
+    'Serpentine helm',
+    'Void knight helm',
+    'Void ranger helm',
+    'Void melee helm',
+    'Void mage helm',
+    'Torva full helm',
+    'Guthan\'s helm',
+    'Dharok\'s helm',
+    'Verac\'s helm',
+    'Karil\'s coif',
+    'Ahrim\'s hood',
+    'Crystal helm',
+    'Mystic hat',
+    'Bandos helmet',
+    'Berserker helm',
+    'Rune full helm',
+    'Dragon full helm',
+    'Black mask',
+    'Slayer helmet',
+    'Circlet of water',
+    'Spiny helm',
+    'Armadyl helmet',
+    'Ancestral hat',
+    'Masori mask',
+    'Inquisitor\'s great helm',
+    'Fighter hat',
+    'Third age full helmet',
+    'Dwarven helmet'
+  ],
+  neck: [
+    'Amulet of glory',
+    'Amulet of eternal glory',
+    'Amulet of fury',
+    'Amulet of torture',
+    'Amulet of accuracy',
+    'Amulet of power',
+    'Amulet of strength',
+    'Amulet of magic',
+    'Amulet of defence',
+    'Blood fury',
+    'Phoenix necklace',
+    'Bonecrusher necklace',
+    'Dragonbone necklace',
+    'Necklace of anguish',
+    'Occult necklace',
+    'Salve amulet',
+    'Salve amulet (e)',
+    'Salve amulet (i)',
+    'Salve amulet (ei)',
+    'Amulet of avarice',
+    'Amulet of ranging',
+    '3rd age amulet',
+    'Gnome amulet',
+    'Dodgy necklace',
+    'Sorrow necklace',
+    'Torc of the elements'
+  ],
+  body: [
+    'Torva platebody',
+    'Bandos chestplate',
+    'Guthan\'s platebody',
+    'Dharok\'s platebody',
+    'Verac\'s brassard',
+    'Karil\'s leathertop',
+    'Ahrim\'s robe top',
+    'Armadyl chestplate',
+    'Ancestral robe top',
+    'Masori body',
+    'Justiciar chestguard',
+    'Dragon chainbody',
+    'Dragon platebody',
+    'Rune platebody',
+    'Granite body',
+    'Mystic robe top',
+    'Proselyte hauberk',
+    'Fighter torso',
+    'Obsidian platebody',
+    'Elite void top',
+    'Void knight top',
+    'Initiate hauberk',
+    'Skeletal top',
+    'Spined body'
+  ],
+  legs: [
+    'Torva platelegs',
+    'Bandos tassets',
+    'Guthan\'s chainskirt',
+    'Dharok\'s platelegs',
+    'Verac\'s plateskirt',
+    'Karil\'s leatherskirt',
+    'Ahrim\'s robe skirt',
+    'Armadyl chainskirt',
+    'Ancestral robe bottom',
+    'Masori chaps',
+    'Justiciar legguards',
+    'Dragon platelegs',
+    'Dragon plateskirt',
+    'Rune platelegs',
+    'Granite legs',
+    'Proselyte cuisse',
+    'Mystic robe bottom',
+    'Elite void robe',
+    'Void knight robe',
+    'Initiate cuisse',
+    'Skeletal legs',
+    'Spined chaps',
+    'Black d\'hide chaps'
+  ],
+  weapon: [
+    'Abyssal whip',
+    'Abyssal tentacle',
+    'Abyssal bludgeon',
+    'Dragon scimitar',
+    'Dragon longsword',
+    'Dragon dagger',
+    'Dragon claws',
+    'Dragon mace',
+    'Dragon sword',
+    'Dragon warhammer',
+    'Dragon 2h sword',
+    'Dragon spear',
+    'Dragon hasta',
+    'Dragon halberd',
+    'Dragon crossbow',
+    'Dragon hunter crossbow',
+    'Dragon hunter lance',
+    'Dragon pickaxe',
+    'Dragon harpoon',
+    'Toxic blowpipe',
+    'Magic shortbow',
+    'Seercull',
+    'Twisted bow',
+    'Bow of faerdhinen',
+    'Crystal bow',
+    'Rune crossbow',
+    'Armadyl crossbow',
+    'Karil\'s crossbow',
+    'Zaryte crossbow',
+    'Arclight',
+    'Saradomin sword',
+    'Zamorakian hasta',
+    'Zamorakian spear',
+    'Bandos godsword',
+    'Armadyl godsword',
+    'Zamorak godsword',
+    'Saradomin godsword',
+    'Inquisitor\'s mace',
+    'Ghrazi rapier',
+    'Osmumten\'s fang',
+    'Staff of the dead',
+    'Toxic staff of the dead',
+    'Staff of light',
+    'Trident of the seas',
+    'Trident of the swamp',
+    'Sanguinesti staff',
+    'Kodai wand',
+    'Ancient scepter',
+    'Elder maul',
+    'Scythe of vitur',
+    'Viggora\'s chainmace',
+    'Ursine chainmace',
+    'Vine whip',
+    'Staff of balance',
+    'Thammaron\'s sceptre',
+    'Heavy ballista',
+    'Light ballista',
+    'Granite maul',
+    'Barrelchest anchor',
+    'Leaf-bladed battleaxe',
+    'Leaf-bladed sword',
+    'Leaf-bladed spear',
+    'Bone dagger',
+    'Chaos spear (imbued)',
+    'Crystal staff',
+    'Third age longsword',
+    'Saradomin staff',
+    'Zamorak staff',
+    'Guthix staff',
+    'Ancient staff',
+    'Slayer staff'
+  ],
+  shield: [
+    'Dragon defender',
+    'Avernic defender',
+    'Rune defender',
+    'Steel defender',
+    'Bronze defender',
+    'Dragonfire shield',
+    'Dragonfire ward',
+    'Ancient wyvern shield',
+    'Crystal shield',
+    'Twisted buckler',
+    'Odium ward',
+    'Malediction ward',
+    'Elysian spirit shield',
+    'Arcane spirit shield',
+    'Spectral spirit shield',
+    'Blessed spirit shield',
+    'Holy book',
+    'Unholy book',
+    'Book of balance',
+    'Book of war',
+    'Book of law',
+    'Book of darkness',
+    'Book of truth',
+    'Dragon square shield',
+    'Dragon kiteshield',
+    'Rune kiteshield',
+    'Iron kiteshield',
+    'Bronze kiteshield',
+    'Iron square shield'
+  ],
+  hands: [
+    'Barrows gloves',
+    'Ferocious gloves',
+    'Regen bracelet',
+    'Combat bracelet',
+    'Bracelet of ethereum (uncharged)',
+    'Diamond bracelet',
+    'Dragon gloves',
+    'Torva gloves',
+    'Bandos gloves',
+    'Mystic gloves',
+    'Infinity gloves',
+    'Black d\'hide vambraces',
+    'Blessed vambraces',
+    'Void knight gloves',
+    'Elite void gloves',
+    'Karamja gloves 3',
+    'Ice gloves',
+    'Granite gloves',
+    'Goldsmith gauntlets',
+    'Gauntlets of solace',
+    'Culinaromancer\'s gloves 10',
+    'Dark gloves',
+    'Skeletal gloves',
+    'Spined gloves'
+  ],
+  boots: [
+    'Primordial boots',
+    'Pegasian boots',
+    'Eternal boots',
+    'Dragon boots',
+    'Ranger boots',
+    'Snakeskin boots',
+    'Bandos boots',
+    'Torva boots',
+    'Guardian boots',
+    'Granite boots',
+    'Mystic boots',
+    'Infinity boots',
+    'Rune boots',
+    'Mithril boots',
+    'Climbing boots',
+    'Spiked manacles',
+    'Boots of lightness',
+    'Fremennik boots',
+    'Graceful boots',
+    'Blessed boots',
+    'Boots of stone',
+    'Skele boots',
+    'Spined boots',
+    'Trailblazer boots'
+  ],
+  ring: [
+    'Berserker ring',
+    'Warrior ring',
+    'Seers ring',
+    'Archer ring',
+    'Tyrannical ring',
+    'Treasonous ring',
+    'Ring of suffering',
+    'Ring of recoil',
+    'Ring of wealth',
+    'Ring of life',
+    'Ring of the gods',
+    'Lightbearer',
+    'Granite ring',
+    'Guardian\'s ring',
+    'Ring of dueling',
+    'Explorer\'s ring 3',
+    'Explorer\'s ring 4',
+    'Diamond ring',
+    'Ruby ring',
+    'Emerald ring',
+    'Sapphire ring',
+    'Dragonstone ring',
+    'Onyx ring',
+    'Zenyte ring',
+    'Bullseye ring',
+    'Ring of zealots',
+    'Gold ring'
+  ],
+  cape: [
+    'Fire cape',
+    'Infernal cape',
+    'Mythical cape',
+    'Ava\'s accumulator',
+    'Ava\'s attractor',
+    'Ava\'s assembler',
+    'Max cape',
+    'Ranging cape',
+    'Magic cape',
+    'Defence cape',
+    'Attack cape',
+    'Strength cape',
+    'Hitpoints cape',
+    'Prayer cape',
+    'Slayer cape',
+    'Fishing cape',
+    'Cooking cape',
+    'Quest point cape',
+    'Saradomin cape',
+    'Zamorak cape',
+    'Guthix cape',
+    'Ancient cape',
+    'Infernal max cape',
+    'Fire max cape',
+    'Ardougne cloak 4',
+    'Ardougne cloak 3',
+    'Ardougne cloak 2',
+    'Ardougne cloak 1',
+    'Obsidian cape',
+    'Soul cape',
+    'Imbued saradomin cape',
+    'Imbued zamorak cape',
+    'Imbued guthix cape'
+  ],
+  ammo: [
+    'Bronze arrows',
+    'Iron arrows',
+    'Steel arrows',
+    'Mithril arrows',
+    'Adamant arrows',
+    'Rune arrows',
+    'Amethyst arrows',
+    'Dragon arrows',
+    'Bronze bolts',
+    'Iron bolts',
+    'Steel bolts',
+    'Mithril bolts',
+    'Adamant bolts',
+    'Rune bolts',
+    'Dragon bolts',
+    'Dragon bolts (e)',
+    'Onyx bolts (e)',
+    'Emerald bolts (e)',
+    'Ruby bolts (e)',
+    'Diamond bolts (e)',
+    'Opal bolts (e)',
+    'Pearl bolts (e)',
+    'Topaz bolts (e)',
+    'Sapphire bolts (e)',
+    'Amethyst darts',
+    'Rune darts',
+    'Dragon darts',
+    'Mithril darts',
+    'Adamant darts',
+    'Bronze javelins',
+    'Iron javelins',
+    'Steel javelins',
+    'Mithril javelins',
+    'Adamant javelins',
+    'Rune javelins',
+    'Dragon javelins',
+    'Chinchompa',
+    'Red chinchompa',
+    'Black chinchompa'
+  ],
+  other: [
+    'Saradomin godsword',
+    'Bandos godsword',
+    'Armadyl godsword',
+    'Zamorak godsword',
+    'Elder maul',
+    'Armadyl crossbow',
+    'Heavy ballista',
+    'Dragon 2h sword',
+    'Granite maul',
+    'Dragon warhammer',
+    'Barrelchest anchor',
+    'Staff of light',
+    'Bow of faerdhinen',
+    'Karil\'s crossbow',
+    'Ahrim\'s staff',
+    'Osmumten\'s fang',
+    'Inquisitor\'s mace',
+    'Ancient godsword',
+    'Thammaron\'s sceptre',
+    'Viggora\'s chainmace',
+    'Ursine chainmace'
+  ]
+};
+
+/**
+ * Populate each gear slot dropdown with item names.
+ * This function iterates over every select element in the gear grid and
+ * appends option elements for each predefined item. The first option
+ * ("None") remains untouched so players can leave a slot empty.
+ */
+function populateGearDropdowns() {
+  const selects = document.querySelectorAll('#gear-grid select');
+  selects.forEach((select) => {
+    const slot = select.getAttribute('data-slot');
+    if (!slot || !gearItems[slot]) return;
+    // Remove any existing options except the first (None)
+    const firstOption = select.querySelector('option');
+    select.innerHTML = '';
+    if (firstOption) {
+      select.appendChild(firstOption);
+    }
+    // Append items for this slot
+    gearItems[slot].forEach((itemName) => {
+      const opt = document.createElement('option');
+      opt.value = itemName;
+      opt.textContent = itemName;
+      select.appendChild(opt);
+    });
+  });
+}
+
 /*
  * Define the raids and their minimum requirements. Each raid object
  * contains a name and a `requirements` object. Requirements can
@@ -182,10 +622,12 @@ const raids = [
         hitpoints: 70
       },
       quests: ['Priest in Peril'],
-      // Chambers of Xeric rewards versatility but requires at least
-      // some melee and ranged capability. Players must equip at
-      // least one melee and one ranged item somewhere in their gear.
-      gear: ['melee', 'ranged']
+      // Chambers of Xeric rewards versatility. Previously this raid
+      // required players to equip both melee and ranged items via
+      // broad gear tags. Now that each gear slot lists individual
+      // items instead of tag categories, we no longer enforce
+      // specific gear requirements. Any gear loadout counts.
+      gear: []
     }
   },
   {
@@ -200,10 +642,12 @@ const raids = [
         strength: 85
       },
       quests: ['Desert Treasure'],
-      // Theatre of Blood is extremely punishing; you'll need heavy
-      // armour and strong melee weapons. Require at least a melee and
-      // tank item to enter.
-      gear: ['melee', 'tank']
+      // Theatre of Blood is extremely punishing; originally it required a
+      // combination of melee and tank gear tags. Since our gear
+      // selector now lists concrete items, we remove those tag
+      // requirements. Players must still meet the stat and quest
+      // thresholds.
+      gear: []
     }
   },
   {
@@ -219,9 +663,9 @@ const raids = [
       },
       quests: ['Recipe for Disaster'],
       // Tombs of Amascut demands both magic prowess and adequate
-      // prayer bonuses for survival. Players must have at least one
-      // magic and one prayer item equipped.
-      gear: ['magic', 'prayer']
+      // prayer bonuses for survival. We remove concrete gear tag
+      // requirements and instead rely on the player’s overall stats.
+      gear: []
     }
   }
 ];
@@ -423,6 +867,9 @@ function displayResults() {
 // Register our event listener once the DOM is loaded. This ensures the button
 // exists when we attach the click handler.
 document.addEventListener('DOMContentLoaded', () => {
+  // Populate the gear selectors with item names on page load
+  populateGearDropdowns();
+
   const fetchButton = document.getElementById('fetch-btn');
   if (fetchButton) {
     fetchButton.addEventListener('click', fetchStats);
