@@ -1,49 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OSRS Raid Checker</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <h1>OSRS Raid Checker</h1>
-  <div class="input-group">
-    <input type="text" id="osrsUsername" placeholder="Enter RSN" />
-    <button onclick="fetchStats()">Fetch stats</button>
-  </div>
-  <!DOCTYPE html>
-    <label>Combat Level:</label>
-    <input type="number" id="combatLevel" />
-    <label>Prayer Level:</label>
-    <input type="number" id="prayerLevel" />
-    <h3>Gear Setup</h3>
-    <div class="gear-grid">
-      <div>
-        <label for="helmet">Helmet:</label>
-        <input type="text" id="helmet" list="gearList" />
-      </div>
-      <div>
-        <label for="body">Body:</label>
-        <input type="text" id="body" list="gearList" />
-      </div>
-      <div>
-        <label for="legs">Legs:</label>
-        <input type="text" id="legs" list="gearList" />
-      </div>
-      <div>
-<label for="weapon">Weapon:</label>>
-        <input type="text" id="weapon" list="gearList" />
-      </div>
-      <div>
-        <label for="shield">Shield:</label>
-        <input type="text" id="shield" list="gearList" />
-      </div>
-    </div>
-    <datalist id="gearList"></datalist>
-  </div>
-  <button onclick="checkRaids()">Check Raids</button>
-  <div id="results"></div>
-  <script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OSRS Raid Checker</title>
+    <!-- Link to our external stylesheet for styling -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <!-- A simple page heading -->
+      <h1>OSRS Raid Checker</h1>
+    </header>
+
+    <main class="container">
+      <!--
+        The main form allows players to either enter their RuneScape username
+        or manually fill out their combat and prayer levels. In later steps
+        we'll add more stat fields and gear selectors.
+      -->
+      <form id="stats-form" class="stats-form" onsubmit="return false;">
+        <div class="form-group">
+          <label for="username">RuneScape Username</label>
+          <input type="text" id="username" placeholder="Enter username" />
+          <!--
+            The Fetch Stats button will call our JS function to fetch data
+            from the official OSRS Hiscores API and populate the fields.
+          -->
+          <button type="button" id="fetch-btn">Fetch Stats</button>
+        </div>
+        <div class="form-group">
+          <label for="combat">Combat Level</label>
+          <input
+            type="number"
+            id="combat"
+            min="3"
+            max="126"
+            placeholder="0"
+            readonly
+          />
+        </div>
+        <div class="form-group">
+          <label for="prayer">Prayer Level</label>
+          <input
+            type="number"
+            id="prayer"
+            min="1"
+            max="99"
+            placeholder="0"
+            readonly
+          />
+        </div>
+        <!-- Manual stat fields for melee, ranged and magic levels.
+             These are editable so players can fill them in if they don't
+             fetch stats. We'll also populate them automatically once
+             the Hiscores API returns data. -->
+        <div class="form-group">
+          <label for="attack">Attack Level</label>
+          <input type="number" id="attack" min="1" max="99" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label for="strength">Strength Level</label>
+          <input type="number" id="strength" min="1" max="99" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label for="defence">Defence Level</label>
+          <input type="number" id="defence" min="1" max="99" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label for="hitpoints">Hitpoints Level</label>
+          <input type="number" id="hitpoints" min="1" max="99" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label for="ranged">Ranged Level</label>
+          <input type="number" id="ranged" min="1" max="99" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label for="magic">Magic Level</label>
+          <input type="number" id="magic" min="1" max="99" placeholder="0" />
+        </div>
+        <!-- Quest checklist: players can tick off quests they've completed.
+             We'll use these to determine access to certain raids. -->
+        <div class="form-group quest-group">
+          <label>Completed Quests</label>
+          <div class="quest-checkboxes">
+            <label>
+              <input type="checkbox" id="quest-priest" value="Priest in Peril" />
+              Priest in Peril
+            </label>
+            <label>
+              <input type="checkbox" id="quest-desert" value="Desert Treasure" />
+              Desert Treasure
+            </label>
+            <label>
+              <input type="checkbox" id="quest-recipe" value="Recipe for Disaster" />
+              Recipe for Disaster
+            </label>
+          </div>
+        </div>
+      </form>
+
+      <!-- Placeholder gear grid for 12 equipment slots -->
+      <section id="gear-grid" class="gear-grid">
+        <!-- We'll populate this grid in a later step -->
+        <p class="placeholder">Gear slot selector coming soon…</p>
+      </section>
+
+      <!-- Button to trigger eligibility check; we'll implement this later -->
+      <button type="button" id="check-raids-btn" class="primary-btn">
+        Check Raids
+      </button>
+
+      <!-- Container for displaying results after eligibility calculation -->
+      <section id="results" class="results"></section>
+    </main>
+
+    <!-- Link to our external JavaScript file -->
+    <script src="script.js"></script>
+  </body>
 </html>
