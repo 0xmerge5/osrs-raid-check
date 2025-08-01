@@ -15,6 +15,7 @@
   --border-color: #dcd2ba;
   --shadow-color: rgba(0, 0, 0, 0.1);
   --font-family: 'Merriweather', serif;
+  --heading-font: 'Cinzel', serif;
 }
 
 /* 2. Override variables for dark mode when the body has .dark-mode */
@@ -58,8 +59,19 @@ header.header {
 }
 
 header.header h1 {
-  font-size: 1.75rem;
+  font-family: var(--heading-font);
+  font-size: 2rem;
   color: var(--accent-color);
+}
+
+/* Tagline styling below the header */
+.tagline {
+  text-align: center;
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  color: var(--accent-color);
+  font-size: 1rem;
 }
 
 /* Dark mode toggle button */
@@ -92,6 +104,7 @@ header.header h1 {
   border-radius: 8px;
   background-color: var(--card-bg-color);
   box-shadow: 0 2px 4px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-group {
@@ -111,6 +124,15 @@ header.header h1 {
   font-size: 1rem;
   background-color: var(--card-bg-color);
   color: var(--text-color);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Highlight inputs and selects when focused for better accessibility */
+.form-group input:focus,
+.gear-slot select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(76, 110, 49, 0.2);
 }
 
 button#fetch-btn,
@@ -154,6 +176,7 @@ button#check-raids-btn:hover {
   border-radius: 8px;
   background-color: var(--card-bg-color);
   box-shadow: 0 2px 4px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Individual gear slot wrapper */
@@ -185,6 +208,7 @@ button#check-raids-btn:hover {
   border-radius: 8px;
   background-color: var(--card-bg-color);
   box-shadow: 0 2px 4px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* 8. Raid cards styling */
@@ -209,11 +233,12 @@ button#check-raids-btn:hover {
   background-color: var(--card-bg-color);
   text-align: center;
   box-shadow: 0 2px 4px var(--shadow-color);
-  transition: transform 0.2s, opacity 0.2s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
 }
 
 .raid-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 6px var(--shadow-color);
 }
 
 .raid-card.locked {
